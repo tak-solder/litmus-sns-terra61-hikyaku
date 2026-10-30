@@ -4,7 +4,7 @@ status: accepted
 
 # 認証は DB 保存の不透明トークンのセッションで行う
 
-- **決定**: ログイン時に十分長いランダムトークンを発行し、SHA-256 のハッシュを `sessions` テーブルに保存する。API は `Authorization: Bearer` で受ける。Web ではブラウザが同一オリジンで API を呼び、Next.js の BFF が httpOnly・Secure・SameSite=Lax の cookie にトークンを持つ。
+- **決定**: ログイン時に十分長いランダムトークンを発行し、SHA-256 のハッシュを `sessions` テーブルに保存する。API は `Authorization: Bearer` で受ける。Web ではブラウザは API を直接呼ばず、Next.js の Server Components / Server Actions が、httpOnly・Secure・SameSite=Lax の cookie に持つトークンを Bearer に変えて API を呼ぶ。
 - **文脈**: Web とモバイルの両方から使える API が必要。ログアウトとパスワードリセット後は既存セッションを即座に失効させたい。コストを抑えるため Redis などの追加構成は避けたい。
 - **検討した案**:
   - 案A: 不透明トークン + DB セッション
